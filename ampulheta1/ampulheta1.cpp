@@ -23,33 +23,33 @@ int main(int argc, char* argv[]){
 	static ViewerGlutOGL viewer; //Cria uma viewer(Janela de aplicação)
 	
 	//Cria uma câmera (Observador da cena)
-	Camera camera(Point4D(0, 0, 4), Point4D(0, 0, 0), Point4D(0, 1, 0));
+	Camera camera(Point4D(0.5, 4, 1), Point4D(0.5, 0, 1), Point4D(0, 0, 1));
 	
 	
-	//Cria o MeshObject que representará a Pirâmide
-	MeshObject piramide;
+	//Cria o MeshObject que representará a ampulheta
+	MeshObject ampulheta;
 	
-	//Cria os vértices da pirâmide
-	piramide.SetVertices("0 0 0, 1 0 0, 1 1 0, 0 1 0, 0.5 0.5 1, 0 0 2, 1 0 2, 1 1 2, 0 1 2");
-	piramide.ComputeVertexNormals();
+	//Cria os vértices da ampulheta
+	ampulheta.SetVertices("0 0 0, 1 0 0, 1 1 0, 0 1 0, 0.5 0.5 1, 0 0 2, 1 0 2, 1 1 2, 0 1 2");
+	ampulheta.ComputeVertexNormals();
 	
-	//Cria as faces da pirâmide
-	piramide.AddFace("0 3 2 1"); //Face "de baixo"	
-	piramide.AddFace("0 1 4"); //Face inferior "esquerda"
-	piramide.AddFace("1 2 4"); //Face inferior "frontal"
-	piramide.AddFace("2 3 4"); //Face inferior "direita"
-	piramide.AddFace("0 4 3"); //Face inferior "traseira"
-	piramide.AddFace("4 6 5"); //Face superior "esquerda"
-	piramide.AddFace("4 7 6"); //Face superior "frontal"
-	piramide.AddFace("4 8 7"); //Face superior "direita"
-	piramide.AddFace("4 5 8"); //Face superior "traseira"
-	piramide.AddFace("5 6 7 8"); //Face "de cima"
+	//Cria as faces da ampulheta
+	ampulheta.AddFace("0 3 2 1"); //Face "de baixo"	
+	ampulheta.AddFace("0 1 4"); //Face inferior "esquerda"
+	ampulheta.AddFace("1 2 4"); //Face inferior "frontal"
+	ampulheta.AddFace("2 3 4"); //Face inferior "direita"
+	ampulheta.AddFace("0 4 3"); //Face inferior "traseira"
+	ampulheta.AddFace("4 6 5"); //Face superior "esquerda"
+	ampulheta.AddFace("4 7 6"); //Face superior "frontal"
+	ampulheta.AddFace("4 8 7"); //Face superior "direita"
+	ampulheta.AddFace("4 5 8"); //Face superior "traseira"
+	ampulheta.AddFace("5 6 7 8"); //Face "de cima"
 	
-	//Dá um meteria à pirâmide
-	piramide.SetMaterial(Material::PLASTIC_BLUE());
+	//Dá um meteria à ampulheta
+	ampulheta.SetMaterial(Material::PLASTIC_BLUE());
 	
-	//Adiciona a pirâmide à cena
-	scene.AddObject(&piramide);
+	//Adiciona a ampulheta à cena
+	scene.AddObject(&ampulheta);
 	
 	//Adiciona Luz e câmera à cena
 	scene.AddLight(Light::BRIGHT_AMBIENT());
