@@ -6,7 +6,6 @@
 
 #include <vart/scene.h>
 #include <vart/light.h>
-#include <vart/arrow.h>
 #include <vart/meshobject.h>
 #include <vart/contrib/viewerglutogl.h>
 
