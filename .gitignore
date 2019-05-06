@@ -1,0 +1,18 @@
+# ignore tudo
+*
+
+# exceto os seguintes arquivos ou diretórios
+!vart/*
+!*/vart
+!*.cpp
+!Makefile
+
+!.gitignore
+
+!*.jpeg
+!*.jpg
+!*.png
+
+# mesmo se eles estiverem em subdiretórios
+!*/
+
