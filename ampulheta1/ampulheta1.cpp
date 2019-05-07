@@ -28,9 +28,12 @@ int main(int argc, char* argv[]){
 	//Cria o MeshObject que representará a ampulheta
 	MeshObject ampulheta;
 	
+	vector<Point4D>vertices = {Point4D(0, 0, 0), Point4D(1, 0, 0), Point4D(1, 1, 0), Point4D(0, 1, 0),
+		Point4D(0.5, 0.5, 1), Point4D(0, 0, 2), Point4D(1, 0, 2), Point4D(1, 1, 2), Point4D(0, 1, 2)};
+	//vertices = "0 0 0, 1 0 0, 1 1 0, 0 1 0, 0.5 0.5 1, 0 0 2, 1 0 2, 1 1 2, 0 1 2"
+	
 	//Cria os vértices da ampulheta
-	ampulheta.SetVertices("0 0 0, 1 0 0, 1 1 0, 0 1 0, 0.5 0.5 1, 0 0 2, 1 0 2, 1 1 2, 0 1 2");
-	ampulheta.ComputeVertexNormals();
+	ampulheta.SetVertices(vertices);
 	
 	//Cria as faces da ampulheta
 	ampulheta.AddFace("0 3 2 1"); //Face "de baixo"	
@@ -44,7 +47,11 @@ int main(int argc, char* argv[]){
 	ampulheta.AddFace("4 5 8"); //Face superior "traseira"
 	ampulheta.AddFace("5 6 7 8"); //Face "de cima"
 	
-	//Dá um meteria à ampulheta
+	//Calculando as normais dos vértices baseadas na média das normais
+	//das faces compartilhadas por eles
+	ampulheta.ComputeVertexNormals();
+	
+	//Dá um meterial à ampulheta
 	ampulheta.SetMaterial(Material::PLASTIC_BLUE());
 	
 	//Adiciona a ampulheta à cena
