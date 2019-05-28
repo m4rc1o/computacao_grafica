@@ -12,7 +12,7 @@
 !*.jpeg
 !*.jpg
 !*.png
-
+!*.gif
 # mesmo se eles estiverem em subdiretórios
 !*/
 
