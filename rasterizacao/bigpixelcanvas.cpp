@@ -92,7 +92,70 @@ void BigPixelCanvas::DrawLine(const wxPoint& p0, const wxPoint& p1, wxDC& dc)
 {
     // Aqui o codigo para desenhar uma linha.
     // Para desenhar um pixel, use "DrawPixel(x, y, dc)".
-    #warning BigPixelCanvas::DrawLine não foi implementado (necessário para a rasterização de segmentos de reta).
+    int dy = (p1.y - p0.y);
+    int dx = (p1.x - p0.x);
+    
+    int sinal = 1;
+    
+    int x = p0.x;
+    int y = p0.y;
+    int xFinal = p1.x;
+    int yFinal = p1.y;
+
+    // se estiver nos octantes da esquerda, invertemos os pontos
+
+    if(dx < 0){
+        x = p1.x;
+        y = p1.y;
+        xFinal = p0.x;
+        yFinal = p0.y;
+        dy = -dy;
+        dx = -dx;
+    }
+
+    if(dy < 0){
+        sinal = -1;
+        dy = -dy;
+    }
+
+
+    if(dy < dx) {
+
+        int d = 2 * dy - dx;
+        int variacaoLeste = 2 * dy;
+        int variacaoNordeste = (dy - dx) * 2;
+
+        DrawPixel(x, y, dc);
+        
+
+        while(x < xFinal) {
+            if(d > 0) {
+                d += variacaoNordeste;
+                y += sinal;
+            } else {
+                d += variacaoLeste;
+            }
+            x++;
+            DrawPixel(x, y, dc);
+        }
+
+    } else {
+        int d = 2 * dx - dy;
+        int variacaoLeste = 2 * dx;
+        int variacaoNordeste = (dx - dy) * 2;
+
+        DrawPixel(x, y, dc);
+        while(y*sinal < yFinal*sinal) {
+            if(d > 0) {
+                d += variacaoNordeste;
+                x++;
+            } else {
+                d += variacaoLeste;
+            }
+            y += sinal;
+            DrawPixel(x, y, dc);
+        }
+	}
 }
 
 void BigPixelCanvas::DrawCircle(wxPoint center, int radius)
