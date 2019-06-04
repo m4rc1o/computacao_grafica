@@ -5,6 +5,7 @@
 !vart/*
 !*/vart
 !*.cpp
+!*.tgz
 !Makefile
 
 !.gitignore
