@@ -91,47 +91,54 @@ void BigPixelCanvas::DrawLine(wxPoint p0, wxPoint p1)
 
 void BigPixelCanvas::DrawLine(const wxPoint& p0, const wxPoint& p1, wxDC& dc)
 {
+    // Coordenadas do ponto inicial
     int x0 = p0.x;
     int y0 = p0.y;
+    
+    // Coordenadas do ponto final
     int x1 = p1.x;
     int y1 = p1.y;
 
-    int dx = x1 - x0;
+    // Cálculo de dy e dx(As variações em y e x)
     int dy = y1 - y0;
+    int dx = x1 - x0;
 
-    int incrementoX = 1;
-    int incrementoY = 1;
+    int incrementoVert = 1;
+    int incrementoHor = 1;
+    
     if(dx < 0 && dy < 0){
+        // Para permitir que linhas em quadrantes diametralmente opostos 
+        // sejam calculadas da mesma forma
         int xTemp = x0;
         int yTemp = y0;
         x0 = x1;
         y0 = y1;
         x1 = xTemp;
         y1 = yTemp;
-    }else if(dx < 0){
-        incrementoX = -1;
     }else if(dy < 0){
-        incrementoY = -1;
+        incrementoVert = -1;
+    }else if(dx < 0){
+        incrementoHor = -1;
     }
-
+    
     dx = abs(dx);
     dy = abs(dy);
 
     int x = x0;
     int y = y0;
-    if(dx > dy){
-        int d = 2*dy - dx;
+    DrawPixel(x0, y0, dc);
+    if(dy <= dx){
+        int d = 2*dy - dx; 
         int deltaLeste = 2*dy;
-        int deltaNordeste = 2*(dy-dx);
-        DrawPixel(x, y, dc);
+        int deltaNordeste = 2*(dy - dx);
         while(x != x1){
-            if(d <= 0){
-                d += deltaLeste;
-            }else{
+            if(d > 0){
                 d += deltaNordeste;
-                y += incrementoY;
+                y += incrementoVert;
+            }else{
+                d += deltaLeste;
             }
-            x += incrementoX;
+            x += incrementoHor;
             DrawPixel(x, y, dc);
         }
     }else{
@@ -140,12 +147,12 @@ void BigPixelCanvas::DrawLine(const wxPoint& p0, const wxPoint& p1, wxDC& dc)
         int deltaNorte = -2*dx;
         while(y != y1){
             if(d <= 0){
-                d += deltaNordeste;
-                x += incrementoX;
+                d += deltaLeste;
+                x += incrementoHor;
             }else{
-                d += deltaNorte;
+                d += deltaNordeste;
             }
-            y += incrementoY;
+            y += incrementoVert;
             DrawPixel(x, y, dc);
         }
     }
@@ -267,8 +274,8 @@ void BigPixelCanvas::DesenharTriangulo2D(const Triang2D& triangulo, wxDC& dc) {
 
     float xEsq = float(vInfArestaLonga.mX);
     float xDir = xEsq;
-    float dxDir = 0;
-    float dxEsq = 0;
+    float dxDir = float(vSupArestaLonga.mX - vInfArestaLonga.mX)/(vSupArestaLonga.mY - vInfArestaLonga.mY);
+    float dxEsq = float(vQNaoEdaArestaLonga.mX - vInfArestaLonga.mX)/(vQNaoEdaArestaLonga.mY - vInfArestaLonga.mY);
     bool estaAEsquerda = true;
     if(vQNaoEdaArestaLonga.mX - vInfArestaLonga.mX < 0){
         // O vértice que não faz parte da aresta longa está à esquerda desta

@@ -5,7 +5,6 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <cmath>
 
 using namespace std;
 
@@ -91,64 +90,9 @@ void BigPixelCanvas::DrawLine(wxPoint p0, wxPoint p1)
 
 void BigPixelCanvas::DrawLine(const wxPoint& p0, const wxPoint& p1, wxDC& dc)
 {
-    int x0 = p0.x;
-    int y0 = p0.y;
-    int x1 = p1.x;
-    int y1 = p1.y;
-
-    int dx = x1 - x0;
-    int dy = y1 - y0;
-
-    int incrementoX = 1;
-    int incrementoY = 1;
-    if(dx < 0 && dy < 0){
-        int xTemp = x0;
-        int yTemp = y0;
-        x0 = x1;
-        y0 = y1;
-        x1 = xTemp;
-        y1 = yTemp;
-    }else if(dx < 0){
-        incrementoX = -1;
-    }else if(dy < 0){
-        incrementoY = -1;
-    }
-
-    dx = abs(dx);
-    dy = abs(dy);
-
-    int x = x0;
-    int y = y0;
-    if(dx > dy){
-        int d = 2*dy - dx;
-        int deltaLeste = 2*dy;
-        int deltaNordeste = 2*(dy-dx);
-        DrawPixel(x, y, dc);
-        while(x != x1){
-            if(d <= 0){
-                d += deltaLeste;
-            }else{
-                d += deltaNordeste;
-                y += incrementoY;
-            }
-            x += incrementoX;
-            DrawPixel(x, y, dc);
-        }
-    }else{
-        int d = dy - 2*dx;
-        int deltaNordeste = 2*(dy - dx);
-        int deltaNorte = -2*dx;
-        while(y != y1){
-            if(d <= 0){
-                d += deltaNordeste;
-                x += incrementoX;
-            }else{
-                d += deltaNorte;
-            }
-            y += incrementoY;
-            DrawPixel(x, y, dc);
-        }
-    }
+    // Aqui o codigo para desenhar uma linha.
+    // Para desenhar um pixel, use "DrawPixel(x, y, dc)".
+    #warning BigPixelCanvas::DrawLine não foi implementado (necessário para a rasterização de segmentos de reta).
 }
 
 void BigPixelCanvas::DrawCircle(wxPoint center, int radius)
@@ -163,35 +107,7 @@ void BigPixelCanvas::DrawCircle(const wxPoint& center, int radius, wxDC& dc)
 {
     // Aqui o codigo para desenhar um circulo.
     // Para desenhar um pixel, use "DrawPixel(x, y, dc)".
-    int x = 0;
-    int y = radius;
-    int x1 = round(radius*cos(M_PI/4));
-    int d = 1 - radius;
-    DrawPixel(center.x, center.y + y, dc);
-    DrawPixel(center.x, center.y - y, dc);
-    DrawPixel(center.x - radius, center.y, dc);
-    DrawPixel(center.x + radius, center.y, dc);
-    int deltaLeste = 0;
-    int deltaSudeste = 0;    
-    while(x < x1){
-        deltaLeste = (x<<1) + 3;
-        deltaSudeste = ((x - y)<<1) + 5;
-        if(d < 0){
-            d += deltaLeste;
-        }else{
-            d += deltaSudeste;
-            y--;
-        }
-        x++;
-        DrawPixel(center.x + x, center.y + y, dc);
-        DrawPixel(center.x + x, center.y - y, dc);
-        DrawPixel(center.x - x, center.y + y, dc);
-        DrawPixel(center.x - x, center.y - y, dc);
-        DrawPixel(center.x + y, center.y + x, dc);
-        DrawPixel(center.x + y, center.y - x, dc);
-        DrawPixel(center.x - y, center.y - x, dc);
-        DrawPixel(center.x - y, center.y + x, dc);
-    }
+    #warning BigPixelCanvas::DrawCircle não foi implementado (necessário para rasterização de círculos).
 }
 
 void BigPixelCanvas::DesenharTriangulo2D(const Triang2D& triangulo) {
@@ -201,110 +117,10 @@ void BigPixelCanvas::DesenharTriangulo2D(const Triang2D& triangulo) {
 }
 
 void BigPixelCanvas::DesenharTriangulo2D(const Triang2D& triangulo, wxDC& dc) {
-    // Aqui vai o código para desenhar um triângulo 2D
-    Ponto p0 = triangulo.P1();
-    Ponto p1 = triangulo.P2();
-    Ponto p2 = triangulo.P3();
-
-    int deltaYP0P1 = abs(p1.mY - p0.mY);
-    int deltaYP0P2 = abs(p2.mY - p0.mY);
-    int deltaYP1P2 = abs(p2.mY - p1.mY);
-
-    //Determinando a aresta longa
-    Ponto vInfArestaLonga;
-    Ponto vSupArestaLonga;
-    Ponto vQNaoEdaArestaLonga;
-    if(deltaYP0P1 > deltaYP0P2){
-        if(deltaYP0P1 > deltaYP1P2){
-            //POP1 é a aresta longa
-            if(p0.mY < p1.mY){
-                vInfArestaLonga = p0;
-                vSupArestaLonga = p1;
-            }else{
-                vInfArestaLonga = p1;
-                vInfArestaLonga = p0;
-            }
-            vQNaoEdaArestaLonga = p2;
-        }else{
-            //P1P2 é a aresta longa
-            if(p1.mY < p2.mY){
-                vInfArestaLonga = p1;
-                vSupArestaLonga = p2;
-            }else{
-                vInfArestaLonga = p2;
-                vSupArestaLonga = p1;
-            }         
-            vQNaoEdaArestaLonga = p0;
-        }
-    }else{
-        if(deltaYP0P2 > deltaYP1P2){
-            //POP2 é a aresta longa
-            if(p0.mY < p2.mY){
-                vInfArestaLonga = p0;
-                vSupArestaLonga = p2;
-            }else{
-                vInfArestaLonga = p2;
-                vSupArestaLonga = p0;
-            }
-            vQNaoEdaArestaLonga = p1;
-        }else{
-            //P1P2 é a aresta longa
-            if(p1.mY < p2.mY){
-                vInfArestaLonga = p1;
-                vSupArestaLonga = p2;
-            }else{
-                vInfArestaLonga = p2;
-                vSupArestaLonga = p1;
-            }
-            vQNaoEdaArestaLonga = p0;
-        }
-    }
-
-    
-    int yMin = vInfArestaLonga.mY;
-    int yMax = vQNaoEdaArestaLonga.mY;
-    int y = yMin;
-
-    float xEsq = float(vInfArestaLonga.mX);
-    float xDir = xEsq;
-    float dxDir = 0;
-    float dxEsq = 0;
-    bool estaAEsquerda = true;
-    if(vQNaoEdaArestaLonga.mX - vInfArestaLonga.mX < 0){
-        // O vértice que não faz parte da aresta longa está à esquerda desta
-        dxDir = float(vSupArestaLonga.mX - vInfArestaLonga.mX)/(vSupArestaLonga.mY - vInfArestaLonga.mY);
-        dxEsq = float(vQNaoEdaArestaLonga.mX - vInfArestaLonga.mX)/(vQNaoEdaArestaLonga.mY - vInfArestaLonga.mY);
-    }else{
-        // A aresta longa está à esquerda
-        dxDir = float(vQNaoEdaArestaLonga.mX - vInfArestaLonga.mX)/(vQNaoEdaArestaLonga.mY - vInfArestaLonga.mY);
-        dxEsq = float(vSupArestaLonga.mX - vInfArestaLonga.mX)/(vSupArestaLonga.mY - vInfArestaLonga.mY);
-        estaAEsquerda = false;
-    }
-    while(y < yMax){
-        for(int x = xEsq; x < xDir; ++x){
-            DrawPixel(x, y, dc);
-        }
-        xEsq += dxEsq;
-        xDir += dxDir;
-        ++y;
-    }
-
-    yMin = vQNaoEdaArestaLonga.mY;
-    yMax = vSupArestaLonga.mY;
-
-    if(estaAEsquerda){
-        dxEsq = float(vSupArestaLonga.mX - vQNaoEdaArestaLonga.mX)/(vSupArestaLonga.mY - vQNaoEdaArestaLonga.mY);
-    }else{
-        dxDir = float(vSupArestaLonga.mX - vQNaoEdaArestaLonga.mX)/(vSupArestaLonga.mY - vQNaoEdaArestaLonga.mY);
-    }
-    while(y < yMax){
-        for(int x = xEsq; x < xDir; ++x){
-            DrawPixel(x, y, dc);
-        }
-        xEsq += dxEsq;
-        xDir += dxDir;
-        ++y;
-    }
+    Interv2D intervalo;
+    while (triangulo.AtualizarIntervaloHorizontal(&intervalo))
+        if (intervalo.Valido())
+            DesenharIntervaloHorizontal(intervalo, dc);
 }
 
 void BigPixelCanvas::DesenharTriangulo3D(const Triang3D& triangulo, wxDC& dc)
